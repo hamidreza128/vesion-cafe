@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منوی کافه لوکس | Luxury Cafe Menu</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #ffd700; /* طلایی روشن‌تر و جذاب‌تر */
+            --primary-dark: #c59d5f; /* طلایی تیره‌تر برای سایه */
+            --dark-bg: #0a0a0a;
+            /* تنظیمات جدید شیشه */
+            --glass-bg: rgba(20, 20, 20, 0.75);
+            --glass-border: 1px solid rgba(255, 215, 0, 0.2); /* حاشیه طلایی محو */
+            --text-main: #ffffff;
+            --text-secondary: #dcdcdc;
+            --shadow-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 20px rgba(255, 215, 0, 0.3); /* درخشش طلایی */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            /* پس‌زمینه تصویری با لایه تاریک روی آن */
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed; /* فیکس شدن پس زمینه هنگام اسکرول */
+        }
+
+        /* هدر استایلیش */
+        header {
+            text-align: center;
+            padding: 5rem 1rem 3rem 1rem;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        header h1 i {
+            color: var(--primary);
+            margin-left: 10px;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        /* دکمه‌های فیلتر */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+            padding: 0 1rem;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 1rem;
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-btn i {
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: var(--primary);
+            color: var(--text-main);
+            transform: translateY(-3px);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #000; /* متن مشکی روی زمینه طلایی */
+            font-weight: 700;
+            box-shadow: var(--shadow-glow);
+            transform: scale(1.05);
+        }
+        
+        .filter-btn.active i {
+            color: #000;
+        }
+
+        /* گرید منو */
+        .menu-container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2.5rem;
+            padding-bottom: 5rem;
+        }
+
+        /* کارت آیتم - افکت شیشه‌ای پیشرفته */
+        .menu-item {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px) saturate(120%); /* بلور بیشتر و اشباع رنگ */
+            -webkit-backdrop-filter: blur(15px) saturate(120%);
+            border: var(--glass-border);
+            border-radius: 24px; /* گوشه‌های گردتر */
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* انیمیشن فنری */
+            box-shadow: var(--shadow-soft);
+            opacity: 0;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-glow), var(--shadow-soft);
+        }
+
+        .img-container {
+            width: 100%;
+            height: 240px; /* عکس بلندتر */
+            overflow: hidden;
+            position: relative;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.8s ease;
+        }
+        
+        /* افکت تاریک شدن روی عکس */
+        .img-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+        }
+
+        .menu-item:hover img {
+            transform: scale(1.15) rotate(2deg); /* زوم و چرخش ملایم */
+        }
+
+        .item-content {
+            padding: 1.8rem;
+            position: relative;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            gap: 10px;
+        }
+
+        .item-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            line-height: 1.4;
+            color: var(--text-main);
+        }
+
+        .item-price {
+            color: #000;
+            background: var(--primary);
+            font-weight: 800;
+            font-size: 1.1rem;
+            padding: 6px 12px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(255, 215, 0, 0.3);
+            white-space: nowrap;
+        }
+
+        .item-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-top: 12px;
+            font-weight: 300;
+        }
+
+        /* فوتر */
+        footer {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: rgba(0,0,0,0.5);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: auto;
+        }
+
+        /* انیمیشن لود شدن */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* رسپانسیو موبایل */
+        @media screen and (max-width: 600px) {
+            header h1 { font-size: 2.2rem; }
+            .filter-container { gap: 10px; margin-bottom: 3rem; }
+            .filter-btn { padding: 0.6rem 1.2rem; font-size: 0.85rem; }
+            .menu-container { grid-template-columns: 1fr; gap: 2rem; }
+            .img-container { height: 220px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1><i class="fas fa-mug-hot"></i> کافه ویـژن</h1>
+        <p>تجربه‌ای لوکس از طعم و آرامش</p>
+    </header>
+
+    <div class="filter-container">
+        <button class="filter-btn active" onclick="filterMenu('all')">همه منو</button>
+        <button class="filter-btn" onclick="filterMenu('hot')"><i class="fas fa-coffee"></i> نوشیدنی گرم</button>
+        <button class="filter-btn" onclick="filterMenu('cold')"><i class="fas fa-glass-martini-alt"></i> نوشیدنی سرد</button>
+        <button class="filter-btn" onclick="filterMenu('cake')"><i class="fas fa-cookie-bite"></i> کیک و دسر</button>
+        <button class="filter-btn" onclick="filterMenu('breakfast')"><i class="fas fa-egg"></i> صبحانه</button>
+    </div>
+
+    <div class="menu-container" id="menu-container">
+        </div>
+
+    <footer>
+        طراحی اختصاصی با <i class="fas fa-heart" style="color: var(--primary); margin: 0 5px;"></i> برای کافه شما
+    </footer>
+
+    <script>
+        // دیتابیس آیتم‌ها (بدون تغییر)
+        const menuItems = [
+            {
+                id: 1,
+                title: "کاپوچینو ایتالیایی اصل",
+                category: "hot",
+                price: "۵۵,۰۰۰",
+                img: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                desc: "ترکیبی هنری از اسپرسو دو شات، شیر بخار داده شده و فوم شیر غلیظ."
+            },
+            {
+                id: 2,
+                title: "آیس لته کارامل ماکیاتو",
+                category: "cold",
+                price: "۶۵,۰۰۰",
+                img: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                desc: "خنکی لذت‌بخش قهوه با لایه‌های شیر تازه، یخ و سس کارامل دست‌ساز."
+            },
+            {
+                id: 3,
+                title: "چیزکیک نیویورکی توت‌فرنگی",
+                category: "cake",
+                price: "۷۵,۰۰۰",
+                img: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                desc: "بافت پنیر خامه‌ای غنی با پایه بیسکوییت کره‌ای و تاپینگ میوه تازه."
+            },
+            {
+                id: 4,
+                title: "املت مخصوص سرآشپز",
+                category: "breakfast",
+                price: "۸۵,۰۰۰",
+                img: "https://images.unsplash.com/photo-1525351484164-39637845600a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                desc: "سه عدد تخم مرغ ارگانیک، قارچ تفت داده شده، پنیر موزارلا و سبزیجات معطر."
+            },
+            {
+                id: 5,
+                title: "موکا دارک چاکلت",
+                category: "hot",
+                price: "۶۰,۰۰۰",
+                img: "https://images.unsplash.com/photo-1578314675278-485e6b806359?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                desc: "شکلات تلخ بلژیکی ۷۰ درصد واقعی ذوب شده همراه با اسپرسو و شیر گرم."
+            },
+            {
+                id: 6,
+                title: "موهیتو نعنا لیمو (طبیعی)",
+                category: "cold",
+                price: "۵۰,۰۰۰",
+                img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                desc: "برگ نعنای تازه کوبیده شده، لیموی سنگی شیرازی، شکر قهوه‌ای و سودا."
+            },
+             {
+                id: 7,
+                title: "پنکیک برج نوتلا و موز",
+                category: "breakfast",
+                price: "۹۰,۰۰۰",
+                img: "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                desc: "سه لایه پنکیک پفکی و داغ با سس شکلات نوتلا فراوان و برش‌های موز."
+            },
+            {
+                id: 8,
+                title: "کروسان کره‌ای فرانسوی",
+                category: "cake",
+                price: "۴۵,۰۰۰",
+                img: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                desc: "کروسان هزار لایه، تازه پخت شده در کافه، ترد و کره‌ای مناسب کنار قهوه."
+            }
+        ];
+
+        const container = document.getElementById('menu-container');
+        const buttons = document.querySelectorAll('.filter-btn');
+
+        function displayMenuItems(menuItems) {
+            let displayMenu = menuItems.map(function (item) {
+                return `
+                <article class="menu-item">
+                    <div class="img-container">
+                        <img src="${item.img}" alt="${item.title}">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-title">${item.title}</h4>
+                            <span class="item-price">${item.price} ت</span>
+                        </div>
+                        <p class="item-desc">${item.desc}</p>
+                    </div>
+                </article>
+                `;
+            });
+            displayMenu = displayMenu.join("");
+            container.innerHTML = displayMenu;
+        }
+
+        function filterMenu(category) {
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            if (category === 'all') {
+                displayMenuItems(menuItems);
+            } else {
+                const filteredItems = menuItems.filter(item => item.category === category);
+                displayMenuItems(filteredItems);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            displayMenuItems(menuItems);
+        });
+
+    </script>
+</body>
+</html>
